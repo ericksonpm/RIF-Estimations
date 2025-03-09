@@ -1,1 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Federal RIF Assistant - VA</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>VA RIF Impact Calculator</h1>
+            <p class="subtitle">OPM-Compliant Calculator (2024 Regulations)</p>
+        </header>
 
+        <div class="calculator">
+            <!-- Performance Section -->
+            <section class="input-section">
+                <h2>Performance History</h2>
+                <div class="input-group">
+                    <label for="evalCount">Number of Evaluations:</label>
+                    <select id="evalCount" onchange="updateRatingInputs()">
+                        <option value="0">None</option>
+                        <option value="1">1 Evaluation</option>
+                        <option value="2">2 Evaluations</option>
+                        <option value="3">3 Evaluations</option>
+                    </select>
+                </div>
+                
+                <div id="ratingContainer"></div>
+                
+                <div id="modalRatingSection" class="hidden">
+                    <div class="input-group">
+                        <label>Competitive Area Modal Rating:</label>
+                        <select id="modalRating">
+                            <option value="12">Level 3 (Fully Successful)</option>
+                            <option value="16">Level 4 (Exceeds FS)</option>
+                            <option value="20">Level 5 (Outstanding)</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Service Information -->
+            <section class="input-section">
+                <h2>Service History</h2>
+                <div class="input-group">
+                    <label>Civilian Service Years:</label>
+                    <input type="number" id="civilianYears" step="0.25" min="0">
+                </div>
+
+                <div class="input-group">
+                    <label>Military Service Years (max 4):</label>
+                    <input type="number" id="militaryYears" step="0.25" min="0" max="4">
+                </div>
+            </section>
+
+            <!-- Retention Factors -->
+            <section class="input-section">
+                <h2>Retention Factors</h2>
+                <div class="input-group">
+                    <label>Tenure Group:</label>
+                    <select id="tenure">
+                        <option value="I">Group I (Career)</option>
+                        <option value="II">Group II (Career Conditional)</option>
+                        <option value="III">Group III (Temporary)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Veteran Preference:</label>
+                    <select id="veteran">
+                        <option value="0">None</option>
+                        <option value="5">5-Point Preference</option>
+                        <option value="10">10-Point Preference</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Age:</label>
+                    <input type="number" id="age" min="18" max="70">
+                </div>
+            </section>
+
+            <button onclick="calculateAll()" class="calculate-btn">Calculate Impact</button>
+            <button onclick="generatePDF()" class="pdf-btn">Save as PDF</button>
+
+            <!-- Results Display -->
+            <div id="results" class="hidden">
+                <div class="result-card">
+                    <h3>Retention Standing</h3>
+                    <p id="retentionScore">Score: Calculating...</p>
+                    <p id="riskLevel"></p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Severance Estimate</h3>
+                    <p id="severanceResult"></p>
+                </div>
+
+                <div class="result-card guidance">
+                    <h3>Recommended Actions</h3>
+                    <ul id="actionList"></ul>
+                </div>
+            </div>
+
+            <!-- Legal Disclaimers -->
+            <div class="disclaimer">
+                <p>⚠️ This tool complies with 2024 OPM RIF regulations. Always verify with HR.</p>
+                <p>🔒 No data is stored or transmitted. Calculations occur in your browser.</p>
+                <p>📅 Updated: March 2025 | <a href="https://www.opm.gov/policy-data-oversight/workforce-restructuring/reductions-in-force/" target="_blank">Official OPM Guide</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
