@@ -20,6 +20,18 @@
             color: #721c24;
         }
         .note { font-size: 0.9em; color: #7f8c8d; }
+        .inline-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .explanation {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -46,114 +58,4 @@
                 <option value="B" selected>Subgroup B (Non-veteran)</option>
             </select>
             <div class="warning">
-                <strong>Military Retirees Important Note:</strong> Only select AD/A if you meet <em>ONE</em> of these:
-                <ul style="margin: 5px 0; padding-left: 20px;">
-                    <li>Combat-related disability (e.g. IED blast in Afghanistan)</li>
-                    <li>Retired with &lt;20 years service</li>
-                    <li>Federal employee since 1964</li>
-                </ul>
-                Non-combat disabilities (even 30%+) use Subgroup B. When in doubt, consult your SF-15 documentation.
-            </div>
-        </div>
-    </div>
-
-    <div class="section">
-        <h2>Service Calculation</h2>
-        
-        <div class="input-group">
-            <label>3. Total Civilian Service Years:</label>
-            <input type="number" id="civilianYears" min="0" step="0.5">
-        </div>
-
-        <div class="input-group">
-            <label>4. Military Service Years:</label>
-            <input type="number" id="militaryYears" min="0" step="0.5">
-            <label><input type="checkbox" id="militaryRetiree"> Exclude military service (20+ year retiree)</label>
-        </div>
-
-        <div class="input-group">
-            <label>5. Last Performance Ratings:</label>
-            <select id="rating1">
-                <option value="">No rating</option>
-                <option value="20">Outstanding (V)</option>
-                <option value="16">Exceeds Fully Successful (IV)</option>
-                <option value="12" selected>Fully Successful (III)</option>
-            </select>
-
-            <select id="rating2">
-                <option value="">No rating</option>
-                <option value="20">Outstanding (V)</option>
-                <option value="16">Exceeds Fully Successful (IV)</option>
-                <option value="12" selected>Fully Successful (III)</option>
-            </select>
-
-            <select id="rating3">
-                <option value="">No rating</option>
-                <option value="20">Outstanding (V)</option>
-                <option value="16">Exceeds Fully Successful (IV)</option>
-                <option value="12" selected>Fully Successful (III)</option>
-            </select>
-            <div class="note">Missing ratings default to Fully Successful.</div>
-        </div>
-    </div>
-
-    <button onclick="calculateRIF()">Calculate Retention Standing</button>
-
-    <div id="result" class="result" style="display:none;">
-        <h3>Retention Standing Summary</h3>
-        <p><strong>Tenure Group:</strong> Group <span id="resTenure"></span></p>
-        <p><strong>Veterans' Subgroup:</strong> Subgroup <span id="resVeteran"></span></p>
-        <p><strong>Adjusted Service Date:</strong> <span id="resSCD"></span> years</p>
-        <p><strong>Retention Priority:</strong> <span id="resPriority"></span></p>
-        <div class="warning" id="exemptions"></div>
-        <div class="note">2025 Update Notes: Contractors targeted first, LEO positions protected</div>
-    </div>
-
-    <script>
-        function calculateRIF() {
-            // Get inputs
-            const tenure = document.getElementById('tenureGroup').value;
-            const veteranStatus = document.getElementById('veteranStatus').value;
-            const civilianYears = parseFloat(document.getElementById('civilianYears').value) || 0;
-            const militaryYears = document.getElementById('militaryRetiree').checked ? 0 : 
-                                parseFloat(document.getElementById('militaryYears').value) || 0;
-
-            // Handle performance ratings (default to 12 if empty)
-            const getRatingValue = id => {
-                const val = document.getElementById(id).value;
-                return val ? parseInt(val) : 12;
-            };
-            
-            const ratings = [
-                getRatingValue('rating1'),
-                getRatingValue('rating2'),
-                getRatingValue('rating3')
-            ];
-            
-            const performanceCredit = ratings.reduce((a,b) => a + b, 0) / 3;
-
-            // Calculate SCD
-            const totalService = civilianYears + militaryYears;
-            const adjustedSCD = totalService + performanceCredit;
-
-            // Determine retention priority
-            const tenureOrder = {'I': 1, 'II': 2, 'III': 3};
-            const veteranOrder = {'AD': 1, 'A': 2, 'B': 3};
-            const retentionScore = 
-                `${tenureOrder[tenure]}-${veteranOrder[veteranStatus]}-${adjustedSCD.toFixed(2)}`;
-
-            // Display results
-            document.getElementById('resTenure').textContent = tenure;
-            document.getElementById('resVeteran').textContent = veteranStatus;
-            document.getElementById('resSCD').textContent = adjustedSCD.toFixed(1);
-            document.getElementById('resPriority').textContent = retentionScore;
-            document.getElementById('result').style.display = 'block';
-
-            // Show warnings
-            const exemptionCheck = veteranStatus === 'B' && tenure === 'III' ? 
-                "Higher risk category - consider position criticality" : "";
-            document.getElementById('exemptions').textContent = exemptionCheck;
-        }
-    </script>
-</body>
-</html>
+                <strong>Military
