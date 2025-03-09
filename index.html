@@ -2,98 +2,130 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Federal Employment Transition Calculator</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Federal RIF Calculator (Unofficial)</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; }
+        .section { background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 8px; }
+        .input-group { margin: 15px 0; }
+        label { display: block; margin: 8px 0; color: #2c3e50; }
+        input, select { padding: 8px; margin: 5px 0; width: 100%; max-width: 300px; }
+        button { background: #3498db; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; }
+        .result { background: #e8f4f8; padding: 20px; margin-top: 20px; border-left: 4px solid #3498db; }
+        .warning { color: #c0392b; font-weight: bold; }
+        .note { font-size: 0.9em; color: #7f8c8d; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Federal RIF Impact Calculator</h1>
-            <p class="subtitle">Unofficial Estimation Tool</p>
-        </header>
+    <h1>Federal RIF Standing Calculator</h1>
+    <div class="note">This unofficial tool helps estimate retention standing during workforce reductions. Always verify with official OPM guidance.</div>
 
-        <div class="calculator">
-            <!-- Service Information -->
-            <section class="input-section">
-                <h2>Service History</h2>
-                
-                <div class="input-group">
-                    <label>Civilian Service Years:</label>
-                    <input type="number" id="civilianYears" step="0.25" min="0">
-                </div>
+    <div class="section">
+        <h2>Employee Information</h2>
+        
+        <div class="input-group">
+            <label>1. Tenure Group:</label>
+            <label><input type="radio" name="tenure" value="I" required> Group I (Career, not on probation)</label>
+            <label><input type="radio" name="tenure" value="II"> Group II (Probationary/Career-conditional)</label>
+            <label><input type="radio" name="tenure" value="III"> Group III (Term appointment)</label>
+        </div>
 
-                <div class="input-group">
-                    <label>Military Status:
-                        <span class="info-icon" title="See SF-15 for retirement status">ℹ️</span>
-                    </label>
-                    <select id="militaryStatus" onchange="updateMilitaryCredit()">
-                        <option value="none">Not Retired</option>
-                        <option value="combat">Combat Disability Retiree</option>
-                        <option value="non-combat">Non-Combat Retiree</option>
-                        <option value="medical">Medically Retired</option>
-                    </select>
-                </div>
-
-                <div class="input-group" id="militaryYearsGroup">
-                    <label>Military Service Years:</label>
-                    <input type="number" id="militaryYears" step="0.25" min="0" max="4" disabled>
-                </div>
-            </section>
-
-            <!-- Retention Factors -->
-            <section class="input-section">
-                <h2>Employment Details</h2>
-
-                <div class="input-group">
-                    <label>Tenure Group:
-                        <span class="info-icon" title="Found in Box 24 of your SF-50">ℹ️</span>
-                    </label>
-                    <select id="tenure">
-                        <option value="I">Group I (Career)</option>
-                        <option value="II">Group II (Career Conditional)</option>
-                        <option value="III">Group III (Temporary)</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label>Veteran Preference:</label>
-                    <select id="veteran">
-                        <option value="0">None</option>
-                        <option value="5">5-Point Preference</option>
-                        <option value="10">10-Point Preference</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label>Age:</label>
-                    <input type="number" id="age" min="18" max="70">
-                </div>
-            </section>
-
-            <button onclick="calculateAll()" class="calculate-btn">Calculate</button>
-
-            <!-- Results Display -->
-            <div id="results" class="hidden">
-                <div class="result-card">
-                    <h3>Severance Estimate</h3>
-                    <p id="severanceResult"></p>
-                </div>
-
-                <div class="result-card guidance">
-                    <h3>Key Considerations</h3>
-                    <ul id="considerationList"></ul>
-                </div>
-            </div>
-
-            <!-- Legal Disclaimers -->
-            <div class="disclaimer">
-                <p>⚠️ This unofficial tool estimates based on public OPM guidelines. Verify all results with HR.</p>
-                <p>🔒 No data is stored or transmitted. Calculations occur in your browser.</p>
-            </div>
+        <div class="input-group">
+            <label>2. Veterans' Status:</label>
+            <select id="veteranStatus">
+                <option value="AD">Subgroup AD (30%+ disability)</option>
+                <option value="A">Subgroup A (Other veterans)</option>
+                <option value="B" selected>Subgroup B (Non-veteran)</option>
+            </select>
+            <div class="note">Military retirees: Only select AD/A if you have combat-related disability</div>
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <div class="section">
+        <h2>Service Calculation</h2>
+        
+        <div class="input-group">
+            <label>3. Total Civilian Service Years:</label>
+            <input type="number" id="civilianYears" min="0" step="0.5">
+        </div>
+
+        <div class="input-group">
+            <label>4. Military Service Years:</label>
+            <input type="number" id="militaryYears" min="0" step="0.5">
+            <label><input type="checkbox" id="militaryRetiree"> 20+ year military retiree (excludes military time)</label>
+        </div>
+
+        <div class="input-group">
+            <label>5. Last 3 Performance Ratings:</label>
+            <select id="rating1">
+                <option value="20">Outstanding (V)</option>
+                <option value="16">Exceeds Fully Successful (IV)</option>
+                <option value="12" selected>Fully Successful (III)</option>
+            </select>
+            <select id="rating2">
+                <option value="20">Outstanding (V)</option>
+                <option value="16">Exceeds Fully Successful (IV)</option>
+                <option value="12" selected>Fully Successful (III)</option>
+            </select>
+            <select id="rating3">
+                <option value="20">Outstanding (V)</option>
+                <option value="16">Exceeds Fully Successful (IV)</option>
+                <option value="12" selected>Fully Successful (III)</option>
+            </select>
+            <div class="note">Missing ratings default to Fully Successful</div>
+        </div>
+    </div>
+
+    <button onclick="calculateRIF()">Calculate Retention Standing</button>
+
+    <div id="result" class="result" style="display:none;">
+        <h3>Retention Standing Summary</h3>
+        <p><strong>Tenure Group:</strong> <span id="resTenure"></span></p>
+        <p><strong>Veterans' Subgroup:</strong> <span id="resVeteran"></span></p>
+        <p><strong>Adjusted Service Date:</strong> <span id="resSCD"></span> years</p>
+        <p><strong>Retention Priority:</strong> <span id="resPriority"></span></p>
+        <div class="warning" id="exemptions"></div>
+        <div class="note">2025 Update Notes: Contractors targeted first, LEO positions protected</div>
+    </div>
+
+    <script>
+        function calculateRIF() {
+            // Get inputs
+            const tenure = document.querySelector('input[name="tenure"]:checked').value;
+            const veteranStatus = document.getElementById('veteranStatus').value;
+            const civilianYears = parseFloat(document.getElementById('civilianYears').value) || 0;
+            const militaryYears = document.getElementById('militaryRetiree').checked ? 0 : 
+                                parseFloat(document.getElementById('militaryYears').value) || 0;
+            
+            // Calculate performance credit
+            const ratings = [
+                parseInt(document.getElementById('rating1').value),
+                parseInt(document.getElementById('rating2').value),
+                parseInt(document.getElementById('rating3').value)
+            ];
+            const performanceCredit = ratings.reduce((a,b) => a + b, 0) / ratings.length;
+
+            // Calculate SCD
+            const totalService = civilianYears + militaryYears;
+            const adjustedSCD = totalService + performanceCredit;
+
+            // Determine retention priority
+            const tenureOrder = {'I': 1, 'II': 2, 'III': 3};
+            const veteranOrder = {'AD': 1, 'A': 2, 'B': 3};
+            const retentionScore = 
+                `${tenureOrder[tenure]}-${veteranOrder[veteranStatus]}-${adjustedSCD.toFixed(2)}`;
+
+            // Display results
+            document.getElementById('resTenure').textContent = `Group ${tenure}`;
+            document.getElementById('resVeteran').textContent = `Subgroup ${veteranStatus}`;
+            document.getElementById('resSCD').textContent = adjustedSCD.toFixed(1);
+            document.getElementById('resPriority').textContent = retentionScore;
+            document.getElementById('result').style.display = 'block';
+
+            // Show warnings
+            const exemptionCheck = veteranStatus === 'B' && tenure === 'III' ? 
+                "Higher risk category - consider position criticality" : "";
+            document.getElementById('exemptions').textContent = exemptionCheck;
+        }
+    </script>
 </body>
 </html>
