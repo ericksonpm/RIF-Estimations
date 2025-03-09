@@ -58,4 +58,75 @@
                 <option value="B" selected>Subgroup B (Non-veteran)</option>
             </select>
             <div class="warning">
-                <strong>Military
+                <strong>Military Retirees Important Note:</strong> Only select AD/A if you meet <em>ONE</em> of these:
+                <ul style="margin-top: 5px;">
+                    <li>Combat-related disability (e.g., IED blast in Afghanistan)</li>
+                    <li>Retired with &lt;20 years service</li>
+                    <li>Federal employee since November 30, 1964</li>
+                </ul>
+                Non-combat disabilities (even at or above 30%) use Subgroup B. When in doubt, consult your SF-15 documentation.
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Service Calculation</h2>
+
+        <div class="input-group">
+            <label>3. Total Civilian Service Years:</label>
+            <input type="number" id="civilianYears" min="0" step="0.5">
+        </div>
+
+        <div class="input-group">
+            <label>4. Military Service Years:</label>
+            <input type="number" id="militaryYears" min="0" step="0.5">
+            
+            <!-- Inline checkbox -->
+            <div class="inline-checkbox">
+                <input type="checkbox" id="militaryRetiree">
+                <label for="militaryRetiree">Check here if you retired with 20+ years of service. (Service excluded for retirement over 20 years).</label>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>5. Last Performance Ratings:</label>
+            <!-- Dropdowns for performance ratings -->
+            <select id="rating1">
+                <option value="">No rating</option>
+                <option value="20">Outstanding (V)</option>
+                <option value="16">Exceeds Fully Successful (IV)</option>
+                <option value="12" selected>Fully Successful (III)</option>
+            </select>
+
+            <select id="rating2">
+                <option value="">No rating</option>
+                <option value="20">Outstanding (V)</option>
+                <option value="16">Exceeds Fully Successful (IV)</option>
+                <option value="12" selected>Fully Successful (III)</option>
+            </select>
+
+            <select id="rating3">
+                <option value="">No rating</option>
+                <option value="20">Outstanding (V)</option>
+                <option value="16">Exceeds Fully Successful (IV)</option>
+                <option value="12" selected>Fully Successful (III)</option>
+            </select>
+
+            <!-- Note about missing ratings -->
+            <div class="note">Missing ratings default to Fully Successful.</div>
+        </div>
+    </div>
+
+    <!-- Button to calculate -->
+    <button onclick="calculateRIF()">Calculate Retention Standing</button>
+
+    <!-- Results Section -->
+    <div id="result" class="result" style="display:none;">
+        <!-- Summary -->
+        <h3>Retention Standing Summary</h3>
+        <p><strong>Tenure Group:</strong> Group <span id="resTenure"></span></p>
+        <p><strong>Veterans' Subgroup:</strong> Subgroup <span id="resVeteran"></span></p>
+        <p><strong>Adjusted Service Date:</strong> Total Service Years =<span id='resSCD'></span></p>
+
+       <!-- Explanation-->
+<div Class=
