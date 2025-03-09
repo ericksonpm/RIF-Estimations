@@ -1,11 +1,9 @@
 :root {
     --primary-blue: #002768;
     --secondary-blue: #0071bc;
-    --va-blue: #003366;
-    --warning-yellow: #ffd700;
-    --success-green: #4CAF50;
-    --error-red: #e74c3c;
     --text-dark: #2c3e50;
+    --warning-yellow: #ffd700;
+    --error-red: #e74c3c;
 }
 
 body {
@@ -26,7 +24,7 @@ header {
     text-align: center;
     margin-bottom: 2rem;
     padding: 2rem;
-    background: var(--va-blue);
+    background: var(--primary-blue);
     color: white;
     border-radius: 10px;
 }
@@ -53,9 +51,10 @@ header {
     align-items: center;
 }
 
-label {
-    font-weight: 600;
-    color: var(--primary-blue);
+.info-icon {
+    cursor: help;
+    font-size: 0.8em;
+    margin-left: 0.5em;
 }
 
 input, select {
@@ -81,17 +80,11 @@ button:hover {
 .calculate-btn {
     background: var(--secondary-blue);
     color: white;
-    margin-right: 1rem;
-}
-
-.pdf-btn {
-    background: var(--text-dark);
-    color: white;
 }
 
 .results {
     margin-top: 2rem;
-    border-top: 2px solid var(--va-blue);
+    border-top: 2px solid var(--primary-blue);
     padding-top: 2rem;
 }
 
@@ -103,17 +96,10 @@ button:hover {
     border-left: 4px solid var(--secondary-blue);
 }
 
-.guidance {
-    background: #fffbe6;
-    border-color: var(--warning-yellow);
-}
-
-.disclaimer {
-    margin-top: 2rem;
-    padding: 1rem;
-    background: #fff3cd;
-    border-radius: 8px;
-    font-size: 0.9rem;
+.error-message {
+    color: var(--error-red);
+    font-size: 0.9em;
+    margin-top: 0.5em;
 }
 
 .hidden {
@@ -127,6 +113,5 @@ button:hover {
     
     button {
         width: 100%;
-        margin-bottom: 1rem;
     }
 }
