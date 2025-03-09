@@ -1,120 +1,92 @@
-const RETENTION_WEIGHTS = {
-    tenure: { I: 20, II: 15, III: 10 },
-    veteran: { 0: 0, 5: 5, 10: 10 },
-    serviceYearWeight: 1
-};
-
-function updateRatingInputs() {
-    const container = document.getElementById('ratingContainer');
-    const count = parseInt(document.getElementById('evalCount').value);
-    container.innerHTML = '';
-
-    if(count === 0) {
-        document.getElementById('modalRatingSection').classList.remove('hidden');
-    } else {
-        document.getElementById('modalRatingSection').classList.add('hidden');
-        for(let i = 1; i <= count; i++) {
-            const group = document.createElement('div');
-            group.className = 'input-group';
-            group.innerHTML = `
-                <label>Evaluation ${i}:</label>
-                <select class="rating-select">
-                    <option value="12">Fully Successful</option>
-                    <option value="16">Exceeds FS</option>
-                    <option value="20">Outstanding</option>
-                </select>
-            `;
-            container.appendChild(group);
-        }
-    }
-}
-
-function calculateServiceCredit() {
-    const evalCount = parseInt(document.getElementById('evalCount').value);
-    if(evalCount === 0) {
-        return parseInt(document.getElementById('modalRating').value);
-    }
+function updateMilitaryCredit() {
+    const status = document.getElementById('militaryStatus').value;
+    const militaryInput = document.getElementById('militaryYears');
+    const militaryGroup = document.getElementById('militaryYearsGroup');
     
-    const ratings = Array.from(document.querySelectorAll('.rating-select'))
-                       .map(select => parseInt(select.value));
-    return ratings.reduce((a, b) => a + b, 0) / ratings.length;
+    if(status === 'medical') {
+        militaryInput.disabled = true;
+        militaryInput.value = '';
+        militaryGroup.classList.add('hidden');
+    } else {
+        militaryInput.disabled = false;
+        militaryGroup.classList.remove('hidden');
+        militaryInput.max = status === 'non-combat' ? 0 : 4;
+    }
 }
 
-function calculateRetentionScore() {
-    const tenure = document.getElementById('tenure').value;
-    const veteran = parseInt(document.getElementById('veteran').value);
-    const serviceYears = parseFloat(document.getElementById('civilianYears').value || 0) +
-                       parseFloat(document.getElementById('militaryYears').value || 0);
+function calculateSeverance() {
+    // Convert years to weeks (52.18 weeks/year)
+    const civilianYears = parseFloat(document.getElementById('civilianYears').value) || 0;
+    const militaryYears = parseFloat(document.getElementById('militaryYears').value) || 0;
+    const age = parseInt(document.getElementById('age').value) || 0;
 
-    return RETENTION_WEIGHTS.tenure[tenure] + 
-           RETENTION_WEIGHTS.veteran[veteran] + 
-           (serviceYears * RETENTION_WEIGHTS.serviceYearWeight);
+    // Convert to weeks with 52-week cap
+    let totalWeeks = (civilianYears + militaryYears) * 52.18;
+    totalWeeks = Math.min(totalWeeks, 52);
+
+    // Age adjustment calculation
+    const ageAdjustment = age > 40 ? 
+        totalWeeks * 0.025 * Math.floor((age - 40)/0.25) : 
+        0;
+
+    const totalSeverance = totalWeeks + ageAdjustment;
+
+    return {
+        base: totalWeeks,
+        adjustment: ageAdjustment,
+        total: totalSeverance
+    };
 }
 
-function generateGuidance(score) {
-    const actions = [];
+function generateConsiderations() {
+    const considerations = [];
     const tenure = document.getElementById('tenure').value;
-    const age = parseInt(document.getElementById('age').value);
+    const veteranPoints = parseInt(document.getElementById('veteran').value);
 
     if(tenure === 'III') {
-        actions.push("Consider lateral transfers to career-conditional positions");
+        considerations.push("Temporary employees may have different separation benefits");
     }
 
-    if(score < 45) {
-        actions.push("Schedule career counseling session with HR specialist");
+    if(veteranPoints > 0) {
+        considerations.push("Veterans may qualify for additional placement assistance");
     }
 
-    if(age >= 50) {
-        actions.push("Review retirement eligibility with benefits center");
-    }
-
-    return actions;
+    return considerations;
 }
 
 function calculateAll() {
+    // Clear previous errors
+    document.querySelectorAll('.error-message').forEach(e => e.remove());
+
+    // Validate inputs
+    const civilianYears = parseFloat(document.getElementById('civilianYears').value) || 0;
+    const militaryYears = parseFloat(document.getElementById('militaryYears').value) || 0;
+    const totalWeeks = (civilianYears + militaryYears) * 52.18;
+
+    if(totalWeeks > 52) {
+        const error = document.createElement('div');
+        error.className = 'error-message';
+        error.textContent = 'Total service cannot exceed 52 weeks';
+        document.getElementById('militaryYearsGroup').appendChild(error);
+        return;
+    }
+
     // Perform calculations
-    const serviceCredit = calculateServiceCredit();
-    const retentionScore = calculateRetentionScore();
-    const riskLevel = retentionScore >= 45 ? "Low Risk" : "Elevated Risk";
-    
-    // Generate guidance
-    const actions = generateGuidance(retentionScore);
-    
-    // Update UI
+    const severance = calculateSeverance();
+    const considerations = generateConsiderations();
+
+    // Display results
     document.getElementById('results').classList.remove('hidden');
-    document.getElementById('retentionScore').textContent = `Retention Score: ${retentionScore}`;
-    document.getElementById('riskLevel').textContent = `Risk Level: ${riskLevel}`;
-    document.getElementById('actionList').innerHTML = actions.map(a => `<li>${a}</li>`).join('');
+    document.getElementById('severanceResult').innerHTML = `
+        Base Severance: ${severance.base.toFixed(1)} weeks<br>
+        Age Adjustment: ${severance.adjustment.toFixed(1)} weeks<br>
+        <strong>Total Estimate: ${severance.total.toFixed(1)} weeks</strong>
+    `;
+
+    document.getElementById('considerationList').innerHTML = 
+        considerations.map(c => `<li>${c}</li>`).join('');
 }
 
-function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    doc.setFontSize(18);
-    doc.text("VA RIF Calculation Report", 15, 20);
-    doc.setFontSize(12);
-    
-    // Add calculation results
-    const yStart = 30;
-    let yPosition = yStart;
-    
-    doc.text(`Retention Score: ${document.getElementById('retentionScore').textContent}`, 15, yPosition);
-    yPosition += 10;
-    doc.text(`Risk Level: ${document.getElementById('riskLevel').textContent}`, 15, yPosition);
-    yPosition += 20;
-    
-    doc.text("Recommended Actions:", 15, yPosition);
-    yPosition += 10;
-    const actions = Array.from(document.getElementById('actionList').children)
-                       .map(li => li.textContent);
-    actions.forEach((action, index) => {
-        doc.text(`• ${action}`, 20, yPosition + (index * 7));
-    });
-    
-    doc.save("rif-report.pdf");
-}
-
-// Initialize modal rating visibility
-document.getElementById('evalCount').addEventListener('change', updateRatingInputs);
-updateRatingInputs();
+// Initialize military status handler
+document.getElementById('militaryStatus').addEventListener('change', updateMilitaryCredit);
+updateMilitaryCredit();
