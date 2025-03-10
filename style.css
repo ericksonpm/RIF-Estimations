@@ -1,88 +1,126 @@
-body { 
-    font-family: Arial, sans-serif; 
-    max-width: 800px; 
-    margin: 20px auto; 
-    padding: 20px; 
+:root {
+    --primary: #2c3e50;
+    --secondary: #3498db;
+    --background: #f8f9fa;
+    --card-bg: #ffffff;
 }
 
-.section { 
-    background: #f5f5f5; 
-    padding: 20px; 
-    margin: 20px 0; 
-    border-radius: 8px; 
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui;
+    background-color: var(--background);
 }
 
-.input-group { 
-    margin: 15px 0; 
+.navbar {
+    background: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-label { 
-    display: block; 
-    margin: 8px 0; 
-    color: #2c3e50; 
-}
-
-input, select { 
-    padding: 8px; 
-    margin: 5px 0; 
-    width: 100%; 
-    max-width: 300px; 
-}
-
-button { 
-    background: #3498db; 
-    color: white; 
-    padding: 12px 24px; 
-    border: none; 
-    border-radius: 4px; 
-    cursor: pointer; 
-}
-
-.result { 
-    background: #e8f4f8; 
-    padding: 20px; 
-    margin-top: 20px; 
-    border-left: 4px solid #3498db; 
-}
-
-.warning { 
-    background: #f8d7da; 
-    padding: 12px; 
-    border-radius: 4px; 
-    border: 1px solid #f5c6cb; 
-    margin: 10px 0; 
-    color: #721c24; 
-}
-
-.note { 
-    font-size: 0.9em; 
-    color: #7f8c8d; 
-}
-
-.explanation { 
-    font-size: 0.9em; 
-    color: #2c3e50; 
-    background-color: #f5f5f5; 
-    padding: 10px; 
-    border-radius: 8px; 
-    margin-top: 15px;
-}
-
-.military-service .flex-row {
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 1.5rem;
 }
 
-.checkbox-label {
-    display: flex !important;
-    align-items: center;
-    gap: 8px;
-    margin-top: 10px;
+.logo {
+    height: 40px;
 }
 
-.rating-selectors {
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border: 1px solid #e0e0e0;
+}
+
+.card-title {
+    color: var(--primary);
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+}
+
+.card-subtitle {
+    color: #7f8c8d;
+    margin-bottom: 2rem;
+}
+
+.input-group {
+    margin: 1.5rem 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+input, select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    max-width: 400px;
+}
+
+button {
+    background: var(--secondary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    width: 100%;
+    max-width: 400px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.result-card {
+    background: #f8f9fa;
+    border-color: var(--secondary);
+}
+
+.footer {
+    background: var(--primary);
+    color: white;
+    padding: 2rem;
+    margin-top: 3rem;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-links {
+    margin-top: 1rem;
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
 }
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Add previous RIF-specific styles here */
