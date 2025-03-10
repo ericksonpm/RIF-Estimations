@@ -3,139 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Federal RIF Calculator</title>
+    <title>RIF Estimations Tool</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <img src="logo.png" alt="Agency Logo" class="logo">
-            <h1>Federal Workforce Tools</h1>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="card">
-            <h2 class="card-title">Reduction in Force (RIF) Calculator</h2>
-            <p class="card-subtitle">Unofficial estimation tool - Verify with HR</p>
-
-            <div class="input-group">
-                <label>1. Tenure Group:</label>
-                <select id="tenureGroup" class="form-control">
-                    <option value="I">Group I (Career, not on probation)</option>
-                    <option value="II">Group II (Probationary/Career-conditional)</option>
-                    <option value="III">Group III (Term appointment)</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>2. Veterans' Status:</label>
-                <select id="veteranStatus" class="form-control">
-                    <option value="AD">Subgroup AD (30%+ disability)</option>
-                    <option value="A">Subgroup A (Other veterans)</option>
-                    <option value="B" selected>Subgroup B (Non-veteran)</option>
-                </select>
-                <div class="warning">
-                    <strong>Military Retirees Note:</strong> Only select AD/A if you meet:
-                    <ul>
-                        <li>Combat-related disability</li>
-                        <li>Retired with &lt;20 years service</li>
-                        <li>Federal since 1964</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label>3. Total Civilian Service Years:</label>
-                <input type="number" id="civilianYears" class="form-control" min="0" step="0.5">
-            </div>
-
-            <div class="input-group military-service">
-                <div class="flex-row">
-                    <label>4. Military Service Years:</label>
-                    <input type="number" id="militaryYears" class="form-control" min="0" step="0.5">
-                </div>
-                <label class="checkbox-label">
-                    <input type="checkbox" id="militaryRetiree"> 
-                    Check here if retired with 20+ years (service excluded)
-                </label>
-            </div>
-
-            <div class="input-group">
-                <label>5. Last 3 Performance Ratings:</label>
-                <div class="rating-selectors">
-                    <select id="rating1" class="form-control">
-                        <option value="">No rating</option>
-                        <option value="20">Outstanding (V)</option>
-                        <option value="16">Exceeds (IV)</option>
-                        <option value="12" selected>Fully Successful (III)</option>
-                    </select>
-                    <select id="rating2" class="form-control">
-                        <option value="">No rating</option>
-                        <option value="20">Outstanding (V)</option>
-                        <option value="16">Exceeds (IV)</option>
-                        <option value="12" selected>Fully Successful (III)</option>
-                    </select>
-                    <select id="rating3" class="form-control">
-                        <option value="">No rating</option>
-                        <option value="20">Outstanding (V)</option>
-                        <option value="16">Exceeds (IV)</option>
-                        <option value="12" selected>Fully Successful (III)</option>
-                    </select>
-                </div>
-                <p class="note">Missing ratings default to Fully Successful</p>
-            </div>
-
-            <button onclick="calculateRIF()" class="primary-btn">Calculate Retention Standing</button>
-        </div>
-
-        <div id="result" class="card result-card" style="display:none;">
-            <h3>Retention Standing Summary</h3>
-            <div class="result-item">
-                <span class="result-label">Tenure Group:</span>
-                <span class="result-value" id="resTenure"></span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Veterans' Subgroup:</span>
-                <span class="result-value" id="resVeteran"></span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Adjusted Service Date:</span>
-                <span class="result-value" id="resSCD"></span>
-            </div>
-            <div class="result-item highlight">
-                <span class="result-label">Retention Priority Score:</span>
-                <span class="result-value" id="resPriority"></span>
-            </div>
-            
-            <div class="explanation">
-                <h4>Understanding Your Results</h4>
-                <div class="explanation-item">
-                    <div class="bullet">1</div>
-                    <p><strong>Lower scores are better</strong> (1-AD-25.00 beats 2-A-30.00)</p>
-                </div>
-                <div class="explanation-item">
-                    <div class="bullet">2</div>
-                    <p><strong>Group I</strong> > II > III</p>
-                </div>
-                <div class="explanation-item">
-                    <div class="bullet">3</div>
-                    <p><strong>Subgroup AD</strong> > A > B</p>
-                </div>
-            </div>
-        </div>
+    <div class="disclaimer">
+        <strong>Disclaimer:</strong> This is an unofficial estimation tool. Results are not official guidance and should be verified through appropriate channels.
     </div>
 
-    <footer class="footer">
-        <div class="footer-content">
-            <p>Official government system - For authorized use only</p>
-            <div class="footer-links">
-                <a href="#privacy">Privacy Policy</a>
-                <a href="#disclaimer">Disclaimer</a>
-                <a href="#contact">Contact HR</a>
-            </div>
+    <div class="container">
+        <h1>RIF Estimations Calculator</h1>
+        
+        <div class="input-group">
+            <label for="employeeData">Employee Data (CSV format):</label>
+            <textarea id="employeeData" rows="6" placeholder="Enter name, position, performance score, years of service..."></textarea>
         </div>
-    </footer>
+        
+        <div class="action-group">
+            <button onclick="calculateScores()">Generate Reports</button>
+            <button onclick="clearFields()" class="secondary">Reset</button>
+        </div>
+
+        <div id="results" class="results-container"></div>
+
+        <div class="score-table">
+            <h2>Retention Priority Matrix</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Priority Group</th>
+                        <th>Score Range</th>
+                        <th>HR Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Group 1 - Critical</td>
+                        <td>90-100</td>
+                        <td>Retain with retention incentives</td>
+                    </tr>
+                    <tr>
+                        <td>Group 2 - High</td>
+                        <td>75-89</td>
+                        <td>Retain with development plan</td>
+                    </tr>
+                    <tr>
+                        <td>Group 3 - Medium</td>
+                        <td>60-74</td>
+                        <td>Case-by-case review</td>
+                    </tr>
+                    <tr>
+                        <td>Group 4 - Low</td>
+                        <td>Below 60</td>
+                        <td>Separation consideration</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>
