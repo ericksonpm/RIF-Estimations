@@ -1,124 +1,141 @@
-/* Base Styles */
+:root {
+    --primary: #2c3e50;
+    --secondary: #27ae60;
+    --background: #f8f9fa;
+    --card-bg: #ffffff;
+    --border: #e0e0e0;
+}
+
 body {
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    line-height: 1.6;
     margin: 0;
-    padding: 0;
-    background-color: #f5f7fa;
+    font-family: 'Segoe UI', system-ui;
+    background-color: var(--background);
+    color: #444;
 }
 
-/* Disclaimer Banner */
-.disclaimer {
-    background-color: #fff3cd;
-    border-left: 4px solid #ffc107;
+/* Warning Banner */
+.banner-warning {
+    background: #fff3cd;
     color: #856404;
-    padding: 1rem;
-    margin: 1rem auto;
-    max-width: 800px;
-    border-radius: 4px;
     text-align: center;
-    font-size: 0.9em;
+    padding: 12px;
+    font-weight: 500;
+    border-bottom: 2px solid #ffeeba;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-/* Main Container */
+.navbar {
+    background: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.logo {
+    height: 40px;
+    filter: grayscale(100%);
+}
+
 .container {
     max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-    background: white;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Cards */
+.card {
+    background: var(--card-bg);
     border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid var(--border);
 }
 
-/* Input Sections */
-.input-group {
-    margin-bottom: 2rem;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #2c3e50;
+.card-title {
+    color: var(--primary);
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
     font-weight: 600;
 }
 
-.input-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #dee2e6;
-    border-radius: 6px;
-    font-family: monospace;
-}
-
-/* Action Buttons */
-.action-group {
-    display: flex;
-    gap: 1rem;
+.card-subtitle {
+    color: #666;
     margin-bottom: 2rem;
+    font-size: 0.9rem;
 }
 
-button {
-    padding: 12px 24px;
-    background-color: #004085;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button.secondary {
-    background-color: #6c757d;
-}
-
-button:hover {
-    background-color: #002752;
-}
-
-/* Results Display */
-.results-container {
-    padding: 1.5rem;
+/* Table Styling */
+.reference-table {
+    margin-top: 2rem;
     background: #f8f9fa;
-    border-radius: 6px;
-    margin: 2rem 0;
 }
 
-/* Priority Matrix Table */
-.score-table {
-    margin: 3rem 0 1rem;
-    padding: 1.5rem;
-    background: #f8f9fa;
-    border-radius: 8px;
-}
-
-.score-table h2 {
-    color: #004085;
-    margin-bottom: 1.5rem;
-}
-
-.score-table table {
+table {
     width: 100%;
     border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+th {
+    background: var(--primary);
+    color: white;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+tr:nth-child(even) {
     background: white;
 }
 
-.score-table th,
-.score-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
+.table-responsive {
+    overflow-x: auto;
 }
 
-.score-table th {
-    background-color: #004085;
+/* Footer */
+.footer {
+    background: #34495e;
     color: white;
-    font-weight: 600;
+    padding: 2rem;
+    margin-top: 3rem;
 }
 
-.score-table tr:nth-child(even) {
-    background-color: #f8f9fa;
+.footer-disclaimer {
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    opacity: 0.8;
 }
 
-.score-table td:first-child {
-    font-weight: 500;
+/* Existing Form Styling Remains */
+/* ... (Keep all previous form styles from earlier versions) ... */
+
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    th, td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .card {
+        padding: 1.5rem;
+    }
 }
