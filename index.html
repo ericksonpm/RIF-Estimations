@@ -8,54 +8,54 @@
 </head>
 <body>
     <div class="disclaimer">
-        <strong>Disclaimer:</strong> This is an unofficial tool for estimation purposes only. 
-        Results should not be considered official guidance or policy.
+        <strong>Disclaimer:</strong> This is an unofficial estimation tool. Results are not official guidance and should be verified through proper channels.
     </div>
 
     <div class="container">
         <h1>RIF Estimations Calculator</h1>
         
-        <!-- Existing form elements here -->
         <div class="input-group">
-            <label for="employeeData">Enter Employee Data:</label>
-            <textarea id="employeeData" rows="6"></textarea>
+            <label for="employeeData">Employee Data (CSV format):</label>
+            <textarea id="employeeData" rows="6" placeholder="Name,Position,Performance Rating,Years of Service..."></textarea>
         </div>
         
-        <button onclick="calculateScores()">Calculate</button>
-        
+        <div class="button-group">
+            <button onclick="calculateScores()">Calculate RIF Scores</button>
+            <button onclick="clearFields()">Reset</button>
+        </div>
+
         <div id="results" class="results-container"></div>
 
-        <!-- New priority score table -->
         <div class="score-table">
-            <h2>Retention Priority Scoring</h2>
+            <h2>Retention Priority Matrix</h2>
             <table>
                 <thead>
                     <tr>
-                        <th>Group</th>
+                        <th>Priority Group</th>
                         <th>Score Range</th>
-                        <th>Description</th>
+                        <th>Retention Recommendation</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Group A</td>
+                        <td>Group 1 - Critical</td>
                         <td>90-100</td>
-                        <td>Critical retention - Exceptional performance</td>
+                        <td>Immediate retention</td>
                     </tr>
                     <tr>
-                        <td>Group B</td>
+                        <td>Group 2 - High</td>
                         <td>75-89</td>
-                        <td>High priority - Strong contributors</td>
+                        <td>Strong retention candidate</td>
                     </tr>
                     <tr>
-                        <td>Group C</td>
+                        <td>Group 3 - Medium</td>
                         <td>60-74</td>
-                        <td>Medium priority - Development candidates</td>
+                        <td>Case-by-case evaluation</td>
                     </tr>
                     <tr>
-                        <td>Group D</td>
-                        <td>Below 60</td>
-                        <td>Potential separation candidates</td>
+                        <td>Group 4 - Low</td>
+                        <td>0-59</td>
+                        <td>Potential separation</td>
                     </tr>
                 </tbody>
             </table>
