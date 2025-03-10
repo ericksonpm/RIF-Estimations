@@ -1,67 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RIF Estimations Tool</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="disclaimer">
-        <strong>Disclaimer:</strong> This is an unofficial estimation tool. Results are not official guidance and should be verified through appropriate channels.
-    </div>
-
-    <div class="container">
-        <h1>RIF Estimations Calculator</h1>
+<div class="container">
+    <div class="card reference-table">
+        <h3>Retention Priority Reference Guide</h3>
         
-        <div class="input-group">
-            <label for="employeeData">Employee Data (CSV format):</label>
-            <textarea id="employeeData" rows="6" placeholder="Enter name, position, performance score, years of service..."></textarea>
-        </div>
-        
-        <div class="action-group">
-            <button onclick="calculateScores()">Generate Reports</button>
-            <button onclick="clearFields()" class="secondary">Reset</button>
-        </div>
-
-        <div id="results" class="results-container"></div>
-
-        <div class="score-table">
-            <h2>Retention Priority Matrix</h2>
+        <div class="table-responsive">
             <table>
                 <thead>
                     <tr>
-                        <th>Priority Group</th>
-                        <th>Score Range</th>
-                        <th>HR Action</th>
+                        <th>Category</th>
+                        <th>Levels</th>
+                        <th>Priority Order</th>
+                        <th>Example</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Group 1 - Critical</td>
-                        <td>90-100</td>
-                        <td>Retain with retention incentives</td>
+                        <td>Tenure Group</td>
+                        <td>I, II, III</td>
+                        <td>I (Highest) → III</td>
+                        <td>Career employee > Term</td>
                     </tr>
                     <tr>
-                        <td>Group 2 - High</td>
-                        <td>75-89</td>
-                        <td>Retain with development plan</td>
+                        <td>Veteran Subgroup</td>
+                        <td>AD, A, B</td>
+                        <td>AD → A → B</td>
+                        <td>30%+ disability first</td>
                     </tr>
                     <tr>
-                        <td>Group 3 - Medium</td>
-                        <td>60-74</td>
-                        <td>Case-by-case review</td>
-                    </tr>
-                    <tr>
-                        <td>Group 4 - Low</td>
-                        <td>Below 60</td>
-                        <td>Separation consideration</td>
+                        <td>Retention Score</td>
+                        <td>Format: 1-AD-25.00</td>
+                        <td>Lower = Better</td>
+                        <td>1-AD-20 > 1-A-30</td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        
+        <div class="note" style="margin-top:1rem;">
+            <strong>Key:</strong> Scores compare left-to-right. 
+            <br>Example: 1-B-15.00 beats 2-AD-50.00 (Group I > II)
+        </div>
     </div>
-
-    <script src="app.js"></script>
-</body>
-</html>
+</div>
