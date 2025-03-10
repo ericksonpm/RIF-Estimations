@@ -1,151 +1,141 @@
-/* Base Styles */
-body {
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
+:root {
+    --primary: #2c3e50;
+    --secondary: #27ae60;
+    --background: #f8f9fa;
+    --card-bg: #ffffff;
+    --border: #e0e0e0;
 }
 
-.disclaimer {
-    background-color: #fff3cd;
-    border-left: 4px solid #ffc107;
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui;
+    background-color: var(--background);
+    color: #444;
+}
+
+/* Warning Banner */
+.banner-warning {
+    background: #fff3cd;
     color: #856404;
-    padding: 1rem;
-    margin: 1rem auto;
-    max-width: 800px;
-    border-radius: 4px;
     text-align: center;
-    font-size: 0.9em;
+    padding: 12px;
+    font-weight: 500;
+    border-bottom: 2px solid #ffeeba;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar {
+    background: var(--primary);
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.logo {
+    height: 40px;
+    filter: grayscale(100%);
 }
 
 .container {
     max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background: white;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Cards */
+.card {
+    background: var(--card-bg);
     border-radius: 8px;
-}
-
-h1 {
-    color: #004085;
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-/* Input Section */
-.input-group {
+    padding: 2rem;
     margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid var(--border);
 }
 
-label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #495057;
+.card-title {
+    color: var(--primary);
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
     font-weight: 600;
 }
 
-textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #dee2e6;
-    border-radius: 6px;
-    font-family: monospace;
-    resize: vertical;
+.card-subtitle {
+    color: #666;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
 }
 
-.button-group {
-    display: flex;
-    gap: 1rem;
-    margin: 1.5rem 0;
-}
-
-button {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.2s;
-}
-
-button:first-child {
-    background-color: #004085;
-    color: white;
-}
-
-button:last-child {
-    background-color: #6c757d;
-    color: white;
-}
-
-button:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-}
-
-/* Results Table */
-.score-table {
-    margin: 3rem 0 1rem;
-    padding: 1.5rem;
+/* Table Styling */
+.reference-table {
+    margin-top: 2rem;
     background: #f8f9fa;
-    border-radius: 8px;
-}
-
-.score-table h2 {
-    color: #004085;
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 1rem;
-}
-
-th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
+    margin: 1rem 0;
 }
 
 th {
-    background-color: #004085;
+    background: var(--primary);
     color: white;
-    font-weight: 600;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
 }
 
 tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background: white;
 }
 
-/* Results Container */
-.results-container {
-    margin-top: 2rem;
-    padding: 1rem;
-    border: 2px solid #dee2e6;
-    border-radius: 6px;
-    background: #f8f9fa;
+.table-responsive {
+    overflow-x: auto;
 }
 
-/* Responsive Design */
+/* Footer */
+.footer {
+    background: #34495e;
+    color: white;
+    padding: 2rem;
+    margin-top: 3rem;
+}
+
+.footer-disclaimer {
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    opacity: 0.8;
+}
+
+/* Existing Form Styling Remains */
+/* ... (Keep all previous form styles from earlier versions) ... */
+
 @media (max-width: 768px) {
-    .container {
-        margin: 0 1rem;
-        padding: 15px;
-    }
-    
-    textarea {
-        font-size: 14px;
-    }
-    
-    button {
-        width: 100%;
-    }
-    
-    .button-group {
+    .nav-container {
         flex-direction: column;
+        text-align: center;
+    }
+    
+    th, td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .card {
+        padding: 1.5rem;
     }
 }
