@@ -1,67 +1,44 @@
-function updateMilitaryCredit() {
-    const status = document.getElementById('militaryStatus').value;
-    const militaryInput = document.getElementById('militaryYears');
-    const militaryGroup = document.getElementById('militaryYearsGroup');
-    
-    if(status === 'medical') {
-        militaryInput.disabled = true;
-        militaryInput.value = '';
-        militaryGroup.classList.add('hidden');
-    } else {
-        militaryInput.disabled = false;
-        militaryGroup.classList.remove('hidden');
-        militaryInput.max = status === 'non-combat' ? 0 : 4;
-    }
-}
-
-function calculateSeverance() {
-    const civilianYears = parseFloat(document.getElementById('civilianYears').value) || 0;
-    const militaryYears = parseFloat(document.getElementById('militaryYears').value) || 0;
-    const age = parseInt(document.getElementById('age').value) || 0;
-
-    // Convert to weeks with cap
-    let totalWeeks = (civilianYears + militaryYears) * 52.18;
-    totalWeeks = Math.min(totalWeeks, 52);
-
-    // Age adjustment
-    const ageAdjustment = age > 40 ? 
-        totalWeeks * 0.025 * Math.floor((age - 40)/0.25) : 
-        0;
-
-    return {
-        base: totalWeeks,
-        adjustment: ageAdjustment,
-        total: totalWeeks + ageAdjustment
-    };
-}
-
-function calculateAll() {
-    // Clear errors
-    document.querySelectorAll('.error-message').forEach(e => e.remove());
-
+function calculateRIF() {
     // Get inputs
+    const tenure = document.getElementById('tenureGroup').value;
+    const veteranStatus = document.getElementById('veteranStatus').value;
     const civilianYears = parseFloat(document.getElementById('civilianYears').value) || 0;
-    const militaryYears = parseFloat(document.getElementById('militaryYears').value) || 0;
-    const totalYears = civilianYears + militaryYears;
+    const militaryYears = document.getElementById('militaryRetiree').checked ? 0 : 
+                        parseFloat(document.getElementById('militaryYears').value) || 0;
 
-    // Validate year input
-    if(totalYears > 1) {
-        const error = document.createElement('div');
-        error.className = 'error-message';
-        error.textContent = 'Total service cannot exceed 1 year (52 weeks)';
-        document.getElementById('militaryYearsGroup').appendChild(error);
-        return;
-    }
+    // Handle performance ratings
+    const getRatingValue = id => {
+        const val = document.getElementById(id).value;
+        return val ? parseInt(val) : 12; // Default to 12 if empty
+    };
+    
+    const ratings = [
+        getRatingValue('rating1'),
+        getRatingValue('rating2'),
+        getRatingValue('rating3')
+    ];
+    
+    const performanceCredit = ratings.reduce((a,b) => a + b, 0) / 3;
 
-    // Calculate and display
-    const severance = calculateSeverance();
-    document.getElementById('results').classList.remove('hidden');
-    document.getElementById('severanceResult').innerHTML = `
-        Base Severance: ${severance.base.toFixed(1)} weeks<br>
-        Age Adjustment: ${severance.adjustment.toFixed(1)} weeks<br>
-        <strong>Total Estimate: ${severance.total.toFixed(1)} weeks</strong>
-    `;
+    // Calculate SCD
+    const totalService = civilianYears + militaryYears;
+    const adjustedSCD = totalService + performanceCredit;
+
+    // Determine retention priority
+    const tenureOrder = {'I': 1, 'II': 2, 'III': 3};
+    const veteranOrder = {'AD': 1, 'A': 2, 'B': 3};
+    const retentionScore = 
+        `${tenureOrder[tenure]}-${veteranOrder[veteranStatus]}-${adjustedSCD.toFixed(2)}`;
+
+    // Display results
+    document.getElementById('resTenure').textContent = tenure;
+    document.getElementById('resVeteran').textContent = veteranStatus;
+    document.getElementById('resSCD').textContent = adjustedSCD.toFixed(1);
+    document.getElementById('resPriority').textContent = retentionScore;
+    document.getElementById('result').style.display = 'block';
+
+    // Show warnings
+    const exemptionCheck = veteranStatus === 'B' && tenure === 'III' ? 
+        "Higher risk category - consider position criticality" : "";
+    document.getElementById('exemptions').textContent = exemptionCheck;
 }
-
-document.getElementById('militaryStatus').addEventListener('change', updateMilitaryCredit);
-updateMili
