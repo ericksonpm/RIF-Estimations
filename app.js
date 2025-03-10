@@ -9,7 +9,7 @@ function calculateRIF() {
     // Handle performance ratings
     const getRatingValue = id => {
         const val = document.getElementById(id).value;
-        return val ? parseInt(val) : 12; // Default to 12 if empty
+        return val ? parseInt(val) : 12; // Default to FS
     };
     
     const ratings = [
@@ -31,14 +31,9 @@ function calculateRIF() {
         `${tenureOrder[tenure]}-${veteranOrder[veteranStatus]}-${adjustedSCD.toFixed(2)}`;
 
     // Display results
-    document.getElementById('resTenure').textContent = tenure;
-    document.getElementById('resVeteran').textContent = veteranStatus;
-    document.getElementById('resSCD').textContent = adjustedSCD.toFixed(1);
+    document.getElementById('resTenure').textContent = `Group ${tenure}`;
+    document.getElementById('resVeteran').textContent = `Subgroup ${veteranStatus}`;
+    document.getElementById('resSCD').textContent = `${adjustedSCD.toFixed(1)} years`;
     document.getElementById('resPriority').textContent = retentionScore;
     document.getElementById('result').style.display = 'block';
-
-    // Show warnings
-    const exemptionCheck = veteranStatus === 'B' && tenure === 'III' ? 
-        "Higher risk category - consider position criticality" : "";
-    document.getElementById('exemptions').textContent = exemptionCheck;
 }
