@@ -43,12 +43,13 @@ function calculateRIF() {
     const veteranStatus = document.getElementById('veteranStatus').value;
     const civilianYears = parseFloat(document.getElementById('civilianYears').value) || 0;
     const militaryRetiree = document.getElementById('militaryRetiree').checked;
+    const combatDisability = document.getElementById('combatDisability').checked;
     let militaryYears = parseFloat(document.getElementById('militaryYears').value) || 0;
     const campaignTime = document.getElementById('campaignTime').checked;
     let campaignYears = parseFloat(document.getElementById('campaignYears').value) || 0;
     
-    if(militaryRetiree) {
-        militaryYears = 0; // Default unless war or campaign service
+    if(militaryRetiree && !combatDisability) {
+        militaryYears = 0; // Default unless combat disability
         if(campaignTime) {
             militaryYears = campaignYears; // Adjust for campaign service
         }
