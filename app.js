@@ -21,7 +21,6 @@ function updateMilitaryYears() {
     militaryInput.value = "";
     militaryInput.setAttribute("disabled", "true");
     militaryNote.style.display = "block";
-    // Show the combat disability question when military retiree is checked
     combatDiv.style.display = "block";
   } else {
     militaryInput.removeAttribute("disabled");
@@ -42,6 +41,15 @@ function updateCampaignInput() {
   }
 }
 
+function toggleFAQ() {
+  const faqDiv = document.getElementById("veteranFAQ");
+  if (faqDiv.style.display === "none" || faqDiv.style.display === "") {
+    faqDiv.style.display = "block";
+  } else {
+    faqDiv.style.display = "none";
+  }
+}
+
 function calculateRIF() {
   // Get input values
   const tenureGroup = document.getElementById("tenureGroup").value;
@@ -54,7 +62,7 @@ function calculateRIF() {
   let campaignYears = parseFloat(document.getElementById("campaignYears").value) || 0;
 
   // If retired and NOT combat-disabled, drop regular military years.
-  // Allow credit for campaign service if provided.
+  // However, if campaign time is provided, allow credit for campaign service.
   if (militaryRetiree && !combatDisability) {
     militaryYears = 0;
     if (campaignTime) {
@@ -62,7 +70,7 @@ function calculateRIF() {
     }
   }
 
-  // Calculate performance average (defaults for missing ratings assumed as Fully Successful)
+  // Calculate performance average (defaults missing ratings to Fully Successful)
   const ratings = [
     parseFloat(document.getElementById("rating1").value),
     parseFloat(document.getElementById("rating2").value),
@@ -73,7 +81,7 @@ function calculateRIF() {
   // Calculate total Service Computation Date (SCD)
   const totalSCD = civilianYears + militaryYears + performanceAvg;
 
-  // Estimate severance pay (example: $1000 per year of total service credit)
+  // Estimate severance pay (example: $1000 per year of service credit)
   const severancePay = totalSCD * 1000;
 
   // Update results display
@@ -95,7 +103,7 @@ function calculateRIF() {
   document.getElementById("resultYearsToRetirement").textContent = `${yearsToRetirement} years to ${goalLabel}`;
   document.getElementById("resultSeverance").textContent = `$${severancePay.toFixed(2)}`;
 
-  // Calculate risk level (example logic: based on SCD; adjust formula as needed)
+  // Calculate risk level (example logic)
   const riskPercentage = Math.min(100, Math.max(0, (totalSCD - 5) * 2));
   const riskBar = document.getElementById("riskBar");
   riskBar.style.width = `${riskPercentage}%`;
@@ -112,9 +120,9 @@ function calculateRIF() {
 }
 
 function exportResults() {
-  // Example export function – currently just logs to the console.
+  // Sample export function – currently logs results to console.
   console.log("Exporting results...");
-  // You could implement a PDF or CSV export here.
+  // Further implementation (e.g., PDF generation) can be added here.
 }
 
 function submitFeedback() {
