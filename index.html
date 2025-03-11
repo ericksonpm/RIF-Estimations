@@ -1,152 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Federal RIF Calculator - Enhanced</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <div class="container">
-        <h1>Federal Retention Calculator</h1>
-        <div class="calculator-card">
-            <!-- Input Section -->
-            <div class="input-section">
-                <h2>Employee Information</h2>
-                
-                <div class="form-group">
-                    <label for="tenureGroup">Tenure Group:</label>
-                    <select id="tenureGroup" class="form-control">
-                        <option value="I">Group I (Career, Not Probationary)</option>
-                        <option value="II">Group II (Career-Conditional/Probationary)</option>
-                        <option value="III">Group III (Term Appointment)</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="veteranStatus">Veteran Preference:</label>
-                    <select id="veteranStatus" class="form-control" onchange="validateMilitary()">
-                        <option value="AD">Subgroup AD (30%+ Disability)</option>
-                        <option value="A">Subgroup A (Other Veterans)</option>
-                        <option value="B">Subgroup B (Non-Veteran)</option>
-                    </select>
-                    <p id="veteranNote">Note: Veterans with a 30%+ disability are eligible for Subgroup AD preference, enhancing RIF retention standing.</p>
-                </div>
-
-                <div class="form-group">
-                    <label for="militaryRetiree">Are you a military retiree with 20+ years of service?</label>
-                    <input type="checkbox" id="militaryRetiree" onclick="updateMilitaryYears()">
-                    <p id="militaryNote" style="display: none;">Note: Military years may not be creditable unless service was during a war or campaign for which a badge was received.</p>
-                </div>
-
-                <div class="form-group">
-                    <label for="combatDisability">Is your military retirement based on a combat-incurred disability?</label>
-                    <input type="checkbox" id="combatDisability">
-                </div>
-
-                <div class="form-group">
-                    <label for="campaignTime">Did you serve in a campaign or expedition?</label>
-                    <input type="checkbox" id="campaignTime" onclick="updateCampaignInput()">
-                    <input type="number" id="campaignYears" placeholder="Years of Campaign Service" min="0" step="0.1" style="display: none;">
-                </div>
-
-                <div class="form-group">
-                    <label>Service Computation:</label>
-                    <div class="grid-2col">
-                        <input type="number" id="civilianYears" placeholder="Civilian Years" min="0" step="0.1">
-                        <input type="number" id="militaryYears" placeholder="Military Years" min="0" step="0.1">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Last 3 Performance Ratings:</label>
-                    <div class="grid-3col">
-                        <select id="rating1" class="form-control">
-                            <option value="20">Outstanding</option>
-                            <option value="16">Exceeds</option>
-                            <option value="12" selected>Fully Successful</option>
-                        </select>
-                        <select id="rating2" class="form-control">
-                            <option value="20">Outstanding</option>
-                            <option value="16">Exceeds</option>
-                            <option value="12" selected>Fully Successful</option>
-                        </select>
-                        <select id="rating3" class="form-control">
-                            <option value="20">Outstanding</option>
-                            <option value="16">Exceeds</option>
-                            <option value="12" selected>Fully Successful</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Retirement Eligibility Goal:</label>
-                    <select id="retirementGoal" class="form-control">
-                        <option value="20">20 Years of Service</option>
-                        <option value="30">30 Years of Service</option>
-                        <option value="MRA">Minimum Retirement Age (MRA)</option>
-                    </select>
-                    <input type="number" id="yearsToRetirement" placeholder="Years to Goal" min="0" step="0.1">
-                </div>
-
-                <button class="calculate-btn" onclick="calculateRIF()">Calculate Retention</button>
+      <h1>Federal Retention Calculator</h1>
+      <div class="calculator-card">
+        <!-- Input Section -->
+        <div class="input-section">
+          <h2>Employee Information</h2>
+          
+          <!-- Tenure Group with Tooltip -->
+          <div class="form-group">
+            <label for="tenureGroup">
+              Tenure Group 
+              <abbr title="Select your federal appointment category: Group I = Career (not on probation), Group II = Career-Conditional/Probationary, Group III = Term Appointment">
+                ?
+              </abbr>
+            </label>
+            <select id="tenureGroup" class="form-control">
+              <option value="I">Group I (Career, Not Probationary)</option>
+              <option value="II">Group II (Career-Conditional/Probationary)</option>
+              <option value="III">Group III (Term Appointment)</option>
+            </select>
+          </div>
+          
+          <!-- Veteran Preference with Tooltip -->
+          <div class="form-group">
+            <label for="veteranStatus">
+              Veteran Preference 
+              <abbr title="For veterans: Subgroup AD = 30%+ Service-Connected Disability, Subgroup A = Other Veterans, Subgroup B = Non-Veteran">
+                ?
+              </abbr>
+            </label>
+            <select id="veteranStatus" class="form-control" onchange="validateMilitary()">
+              <option value="AD">Subgroup AD (30%+ Disability)</option>
+              <option value="A">Subgroup A (Other Veterans)</option>
+              <option value="B">Subgroup B (Non-Veteran)</option>
+            </select>
+            <p id="veteranNote">
+              Note: Veterans with a 30%+ disability are eligible for Subgroup AD preference.
+            </p>
+          </div>
+          
+          <!-- Military Retiree -->
+          <div class="form-group">
+            <label for="militaryRetiree">
+              Are you a military retiree with 20+ years of service?
+              <abbr title="If yes, your military time might not count unless you have a combat-incurred disability or qualifying campaign service.">
+                ?
+              </abbr>
+            </label>
+            <input type="checkbox" id="militaryRetiree" onclick="updateMilitaryYears()" />
+            <p id="militaryNote" style="display: none;">
+              Note: Military years may not be creditable unless service was during a qualifying war or campaign.
+            </p>
+          </div>
+          
+          <!-- Combat Disability (only shown if Military Retiree is checked) -->
+          <div class="form-group" id="combatDiv" style="display: none;">
+            <label for="combatDisability">
+              Is your military retirement based on a combat-incurred disability?
+              <abbr title="Check this if your retirement was due to a disability incurred in combat.">
+                ?
+              </abbr>
+            </label>
+            <input type="checkbox" id="combatDisability" />
+          </div>
+          
+          <!-- Campaign/Expedition Service -->
+          <div class="form-group">
+            <label for="campaignTime">
+              Did you serve in a campaign or expedition?
+              <abbr title="If yes, you may credit those years for service in a qualifying campaign.">
+                ?
+              </abbr>
+            </label>
+            <input type="checkbox" id="campaignTime" onclick="updateCampaignInput()" />
+            <input type="number" id="campaignYears" placeholder="Years of Campaign Service" min="0" step="0.1" style="display: none;" />
+          </div>
+          
+          <!-- Service Computation -->
+          <div class="form-group">
+            <label>
+              Service Computation 
+              <abbr title="Enter your total years of civilian and military service.">
+                ?
+              </abbr>
+            </label>
+            <div class="grid-2col">
+              <input type="number" id="civilianYears" placeholder="Civilian Years" min="0" step="0.1" />
+              <input type="number" id="militaryYears" placeholder="Military Years" min="0" step="0.1" />
             </div>
-
-            <!-- Results Section -->
-            <div class="results-section" id="results" style="display: none;">
-                <h2>Retention Standing</h2>
-                <div class="result-item">
-                    <span class="result-label">Tenure Group:</span>
-                    <span id="resultTenure" class="result-value"></span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Veteran Subgroup:</span>
-                    <span id="resultVeteran" class="result-value"></span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Total SCD:</span>
-                    <span id="resultSCD" class="result-value highlight"></span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Performance Avg:</span>
-                    <span id="resultPerformance" class="result-value"></span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Years to Retirement:</span>
-                    <span id="resultYearsToRetirement" class="result-value"></span>
-                </div>
-                <div class="result-item">
-                    <span class="result-label">Severance Pay Estimate:</span>
-                    <span id="resultSeverance" class="result-value highlight"></span>
-                </div>
-                
-                <div class="risk-meter">
-                    <div class="risk-bar" id="riskBar"></div>
-                    <div class="risk-labels">
-                        <span>Low Risk</span>
-                        <span>High Risk</span>
-                    </div>
-                </div>
-                
-                <button class="export-btn" onclick="exportResults()">Export Results</button>
+          </div>
+          
+          <!-- Performance Ratings -->
+          <div class="form-group">
+            <label>
+              Last 3 Performance Ratings 
+              <abbr title="Enter your ratings: Outstanding = 20, Exceeds = 16, Fully Successful = 12. Missing ratings default to Fully Successful.">
+                ?
+              </abbr>
+            </label>
+            <div class="grid-3col">
+              <select id="rating1" class="form-control">
+                <option value="20">Outstanding</option>
+                <option value="16">Exceeds</option>
+                <option value="12" selected>Fully Successful</option>
+              </select>
+              <select id="rating2" class="form-control">
+                <option value="20">Outstanding</option>
+                <option value="16">Exceeds</option>
+                <option value="12" selected>Fully Successful</option>
+              </select>
+              <select id="rating3" class="form-control">
+                <option value="20">Outstanding</option>
+                <option value="16">Exceeds</option>
+                <option value="12" selected>Fully Successful</option>
+              </select>
             </div>
+          </div>
+          
+          <!-- Retirement Eligibility -->
+          <div class="form-group">
+            <label>
+              Retirement Eligibility Goal 
+              <abbr title="Select your retirement milestone: 20 or 30 years of service, or Minimum Retirement Age (MRA).">
+                ?
+              </abbr>
+            </label>
+            <select id="retirementGoal" class="form-control">
+              <option value="20">20 Years of Service</option>
+              <option value="30">30 Years of Service</option>
+              <option value="MRA">Minimum Retirement Age (MRA)</option>
+            </select>
+            <input type="number" id="yearsToRetirement" placeholder="Years to Goal" min="0" step="0.1" />
+          </div>
+          
+          <button class="calculate-btn" onclick="calculateRIF()">
+            Calculate Retention
+          </button>
         </div>
-
-        <!-- FAQs and Resources -->
-        <div class="faqs-section">
-            <h2>Frequently Asked Questions</h2>
-            <ul>
-                <li><a href="https://www.opm.gov/policy-data-oversight/workforce-restructuring/reductions-in-force/">OPM RIF Guidance</a></li>
-                <li><a href="https://www.fedweek.com/ask/federal-government-policies/reduction-in-force/">RIF Overview</a></li>
-            </ul>
+        
+        <!-- Results Section -->
+        <div class="results-section" id="results" style="display: none;">
+          <h2>Retention Standing</h2>
+          <div class="result-item">
+            <span class="result-label">Tenure Group:</span>
+            <span id="resultTenure" class="result-value"></span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Veteran Subgroup:</span>
+            <span id="resultVeteran" class="result-value"></span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Total SCD:</span>
+            <span id="resultSCD" class="result-value highlight"></span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Performance Avg:</span>
+            <span id="resultPerformance" class="result-value"></span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Years to Retirement:</span>
+            <span id="resultYearsToRetirement" class="result-value"></span>
+          </div>
+          <div class="result-item">
+            <span class="result-label">Severance Pay Estimate:</span>
+            <span id="resultSeverance" class="result-value highlight"></span>
+          </div>
+          <div class="risk-meter">
+            <div class="risk-bar" id="riskBar"></div>
+            <div class="risk-labels">
+              <span>Low Risk</span>
+              <span>High Risk</span>
+            </div>
+          </div>
+          
+          <!-- Feedback Form -->
+          <div class="feedback">
+            <h3>Your Feedback</h3>
+            <form id="feedbackForm">
+              <label for="feedbackText">Please let us know how we can improve this tool:</label>
+              <textarea id="feedbackText" placeholder="Enter your comments..." rows="3"></textarea>
+              <button type="button" onclick="submitFeedback()">Submit Feedback</button>
+            </form>
+          </div>
+          
+          <button class="export-btn" onclick="exportResults()">
+            Export Results
+          </button>
         </div>
-
-        <!-- Disclaimer -->
-        <div class="disclaimer">
-            <p>This unofficial tool follows OPM's 2025 RIF guidelines. Verify results with your HR specialist.</p>
-        </div>
+      </div>
+      
+      <!-- FAQs Section (Collapsible) -->
+      <details class="faqs-section">
+        <summary>Frequently Asked Questions (Click to Expand)</summary>
+        <ul>
+          <li>
+            <a href="https://www.opm.gov/policy-data-oversight/workforce-restructuring/reductions-in-force/" target="_blank">
+              OPM RIF Guidance
+            </a>
+          </li>
+          <li>
+            <a href="https://www.fedweek.com/ask/federal-government-policies/reduction-in-force/" target="_blank">
+              RIF Overview
+            </a>
+          </li>
+        </ul>
+      </details>
+      
+      <!-- Disclaimer -->
+      <div class="disclaimer">
+        <p>
+          This unofficial tool follows OPM's 2025 RIF guidelines. Please verify your results with your HR specialist.
+        </p>
+      </div>
     </div>
-
+    
     <script src="app.js"></script>
-</body>
+  </body>
 </html>
