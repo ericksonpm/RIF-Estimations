@@ -89,4 +89,57 @@ label {
 .result-item {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10
+    margin-bottom: 10px;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.result-label {
+    color: #7f8c8d;
+}
+
+.highlight {
+    color: var(--highlight-color);
+    font-weight: bold;
+}
+
+.risk-meter {
+    margin-top: 25px;
+    height: 20px;
+    background-color: #ecf0f1;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.risk-bar {
+    height: 100%;
+    width: 50%;
+    background: linear-gradient(90deg, #2ecc71, #e74c3c);
+    transition: width 0.5s ease;
+}
+
+.risk-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #7f8c8d;
+}
+
+.faqs-section {
+    margin-top: 25px;
+}
+
+.disclaimer {
+    margin-top: 25px;
+    font-size: 0.9em;
+    color: #95a5a6;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .grid-2col, .grid-3col {
+        grid-template-columns: 1fr;
+    }
+}
