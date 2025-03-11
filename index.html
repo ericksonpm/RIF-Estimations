@@ -13,14 +13,12 @@
         <!-- Input Section -->
         <div class="input-section">
           <h2>Employee Information</h2>
-          
-          <!-- Tenure Group with Tooltip -->
+
+          <!-- Tenure Group -->
           <div class="form-group">
             <label for="tenureGroup">
               Tenure Group 
-              <abbr title="Select your federal appointment category: Group I = Career (not on probation), Group II = Career-Conditional/Probationary, Group III = Term Appointment">
-                ?
-              </abbr>
+              <abbr title="Select your federal appointment category: Group I = Career (not on probation), Group II = Career-Conditional/Probationary, Group III = Term Appointment">?</abbr>
             </label>
             <select id="tenureGroup" class="form-control">
               <option value="I">Group I (Career, Not Probationary)</option>
@@ -28,14 +26,12 @@
               <option value="III">Group III (Term Appointment)</option>
             </select>
           </div>
-          
-          <!-- Veteran Preference with Tooltip -->
+
+          <!-- Veteran Preference -->
           <div class="form-group">
             <label for="veteranStatus">
               Veteran Preference 
-              <abbr title="For veterans: Subgroup AD = 30%+ Service-Connected Disability, Subgroup A = Other Veterans, Subgroup B = Non-Veteran">
-                ?
-              </abbr>
+              <abbr title="Subgroup AD = Veterans with 30%+ service-connected disability; Subgroup A = other veterans; Subgroup B = Non-Veteran">?</abbr>
             </label>
             <select id="veteranStatus" class="form-control" onchange="validateMilitary()">
               <option value="AD">Subgroup AD (30%+ Disability)</option>
@@ -43,68 +39,71 @@
               <option value="B">Subgroup B (Non-Veteran)</option>
             </select>
             <p id="veteranNote">
-              Note: Veterans with a 30%+ disability are eligible for Subgroup AD preference.
+              Note: Veterans with a 30%+ service-connected disability may qualify for Subgroup AD preference.
+              <span class="more-info-link" onclick="toggleFAQ()">Learn More</span>
             </p>
+            <div id="veteranFAQ" class="faq-content" style="display:none;">
+              <p><strong>General Requirements for Veterans' Preference</strong></p>
+              <ul>
+                <li>Honorable discharge is required.</li>
+                <li>At least 24 months of service (or full period of active duty if discharged early for service‑connected disability).</li>
+                <li>For military retirees, additional conditions apply—that is, retirement must be based on a combat-incurred disability, or be based on less than 20 years of active duty, or there must be continuous federal employment since November 30, 1964.</li>
+                <li>Must have a compensable service‑connected disability of 30% or more to qualify for Subgroup AD.</li>
+              </ul>
+              <p>
+                For more details, please see the official OPM RIF Guidelines.
+              </p>
+            </div>
           </div>
-          
+
           <!-- Military Retiree -->
           <div class="form-group">
             <label for="militaryRetiree">
-              Are you a military retiree with 20+ years of service?
-              <abbr title="If yes, your military time might not count unless you have a combat-incurred disability or qualifying campaign service.">
-                ?
-              </abbr>
+              Are you a military retiree with 20+ years of service? 
+              <abbr title="If yes, note that your military service might not be fully creditable unless you meet certain conditions.">?</abbr>
             </label>
             <input type="checkbox" id="militaryRetiree" onclick="updateMilitaryYears()" />
             <p id="militaryNote" style="display: none;">
-              Note: Military years may not be creditable unless service was during a qualifying war or campaign.
+              Note: Military years may not count unless service was during a qualifying war or campaign.
             </p>
           </div>
-          
-          <!-- Combat Disability (only shown if Military Retiree is checked) -->
+
+          <!-- Combat Disability -->
           <div class="form-group" id="combatDiv" style="display: none;">
             <label for="combatDisability">
-              Is your military retirement based on a combat-incurred disability?
-              <abbr title="Check this if your retirement was due to a disability incurred in combat.">
-                ?
-              </abbr>
+              Is your military retirement based on a combat-incurred disability? 
+              <abbr title="Check if your retirement was due to a disability incurred in combat.">?</abbr>
             </label>
             <input type="checkbox" id="combatDisability" />
           </div>
-          
+
           <!-- Campaign/Expedition Service -->
           <div class="form-group">
             <label for="campaignTime">
-              Did you serve in a campaign or expedition?
-              <abbr title="If yes, you may credit those years for service in a qualifying campaign.">
-                ?
-              </abbr>
+              Did you serve in a campaign or expedition? 
+              <abbr title="If yes, you may credit those years toward your service computation.">?</abbr>
             </label>
             <input type="checkbox" id="campaignTime" onclick="updateCampaignInput()" />
             <input type="number" id="campaignYears" placeholder="Years of Campaign Service" min="0" step="0.1" style="display: none;" />
           </div>
-          
+
           <!-- Service Computation -->
           <div class="form-group">
             <label>
               Service Computation 
-              <abbr title="Enter your total years of civilian and military service.">
-                ?
-              </abbr>
+              <abbr title="Enter the total years of civilian and military service.">?</abbr>
             </label>
             <div class="grid-2col">
               <input type="number" id="civilianYears" placeholder="Civilian Years" min="0" step="0.1" />
               <input type="number" id="militaryYears" placeholder="Military Years" min="0" step="0.1" />
             </div>
           </div>
-          
+
           <!-- Performance Ratings -->
           <div class="form-group">
             <label>
               Last 3 Performance Ratings 
-              <abbr title="Enter your ratings: Outstanding = 20, Exceeds = 16, Fully Successful = 12. Missing ratings default to Fully Successful.">
-                ?
-              </abbr>
+              <abbr title="Outstanding = 20, Exceeds = 16, Fully Successful = 12; assume Fully Successful for missing ratings.">?</abbr>
             </label>
             <div class="grid-3col">
               <select id="rating1" class="form-control">
@@ -124,14 +123,12 @@
               </select>
             </div>
           </div>
-          
+
           <!-- Retirement Eligibility -->
           <div class="form-group">
             <label>
               Retirement Eligibility Goal 
-              <abbr title="Select your retirement milestone: 20 or 30 years of service, or Minimum Retirement Age (MRA).">
-                ?
-              </abbr>
+              <abbr title="Select your retirement milestone: 20 or 30 years of service, or your Minimum Retirement Age (MRA).">?</abbr>
             </label>
             <select id="retirementGoal" class="form-control">
               <option value="20">20 Years of Service</option>
@@ -140,12 +137,10 @@
             </select>
             <input type="number" id="yearsToRetirement" placeholder="Years to Goal" min="0" step="0.1" />
           </div>
-          
-          <button class="calculate-btn" onclick="calculateRIF()">
-            Calculate Retention
-          </button>
+
+          <button class="calculate-btn" onclick="calculateRIF()">Calculate Retention</button>
         </div>
-        
+
         <!-- Results Section -->
         <div class="results-section" id="results" style="display: none;">
           <h2>Retention Standing</h2>
@@ -173,6 +168,7 @@
             <span class="result-label">Severance Pay Estimate:</span>
             <span id="resultSeverance" class="result-value highlight"></span>
           </div>
+
           <div class="risk-meter">
             <div class="risk-bar" id="riskBar"></div>
             <div class="risk-labels">
@@ -180,7 +176,7 @@
               <span>High Risk</span>
             </div>
           </div>
-          
+
           <!-- Feedback Form -->
           <div class="feedback">
             <h3>Your Feedback</h3>
@@ -190,13 +186,11 @@
               <button type="button" onclick="submitFeedback()">Submit Feedback</button>
             </form>
           </div>
-          
-          <button class="export-btn" onclick="exportResults()">
-            Export Results
-          </button>
+
+          <button class="export-btn" onclick="exportResults()">Export Results</button>
         </div>
       </div>
-      
+
       <!-- FAQs Section (Collapsible) -->
       <details class="faqs-section">
         <summary>Frequently Asked Questions (Click to Expand)</summary>
@@ -213,7 +207,7 @@
           </li>
         </ul>
       </details>
-      
+
       <!-- Disclaimer -->
       <div class="disclaimer">
         <p>
@@ -221,7 +215,6 @@
         </p>
       </div>
     </div>
-    
     <script src="app.js"></script>
   </body>
 </html>
