@@ -30,13 +30,18 @@
                         <option value="A">Subgroup A (Other Veterans)</option>
                         <option value="B">Subgroup B (Non-Veteran)</option>
                     </select>
-                    <p id="veteranNote">Note: Veterans with campaign or combat time may be eligible for preference, enhancing RIF retention standing.</p>
+                    <p id="veteranNote">Note: Veterans with a 30%+ disability are eligible for Subgroup AD preference, enhancing RIF retention standing.</p>
                 </div>
 
                 <div class="form-group">
                     <label for="militaryRetiree">Are you a military retiree with 20+ years of service?</label>
                     <input type="checkbox" id="militaryRetiree" onclick="updateMilitaryYears()">
                     <p id="militaryNote" style="display: none;">Note: Military years may not be creditable unless service was during a war or campaign for which a badge was received.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="combatDisability">Is your military retirement based on a combat-incurred disability?</label>
+                    <input type="checkbox" id="combatDisability">
                 </div>
 
                 <div class="form-group">
