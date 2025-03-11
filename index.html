@@ -3,164 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RIF Standing Estimator</title>
+    <title>Federal RIF Calculator - Beta</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <img src="logo.png" alt="HR Toolkit" class="logo">
-            <h1>HR Support Toolkit</h1>
-        </div>
-    </nav>
-
-    <div class="banner-warning">
-        ⚠️ Unofficial Planning Tool - Does Not Replace OPM RIF Regulations
-    </div>
-
     <div class="container">
-        <div class="card">
-            <h2 class="card-title">RIF Retention Estimator</h2>
-            <p class="card-subtitle">For informational purposes only - Not for official determinations</p>
-
-            <!-- Input Sections (Same as Previous) -->
-            <div class="input-group">
-                <label>1. Tenure Group:</label>
-                <select id="tenureGroup" class="form-control">
-                    <option value="I">Group I (Career, not on probation)</option>
-                    <option value="II">Group II (Probationary/Career-conditional)</option>
-                    <option value="III">Group III (Term appointment)</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>2. Veterans' Status:</label>
-                <select id="veteranStatus" class="form-control">
-                    <option value="AD">Subgroup AD (30%+ disability)</option>
-                    <option value="A">Subgroup A (Other veterans)</option>
-                    <option value="B" selected>Subgroup B (Non-veteran)</option>
-                </select>
-                <div class="warning">
-                    <strong>Military Retirees Note:</strong> Only select AD/A if you meet:
-                    <ul>
-                        <li>Combat-related disability</li>
-                        <li>Retired with &lt;20 years service</li>
-                        <li>Federal since 1964</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label>3. Total Civilian Service Years:</label>
-                <input type="number" id="civilianYears" class="form-control" min="0" step="0.5">
-            </div>
-
-            <div class="input-group military-service">
-                <div class="flex-row">
-                    <label>4. Military Service Years:</label>
-                    <input type="number" id="militaryYears" class="form-control" min="0" step="0.5">
-                </div>
-                <label class="checkbox-label">
-                    <input type="checkbox" id="militaryRetiree"> 
-                    Check here if retired with 20+ years (service excluded)
-                </label>
-            </div>
-
-            <div class="input-group">
-                <label>5. Last 3 Performance Ratings:</label>
-                <div class="rating-selectors">
-                    <select id="rating1" class="form-control">
-                        <option value="">No rating</option>
-                        <option value="20">Outstanding (V)</option>
-                        <option value="16">Exceeds (IV)</option>
-                        <option value="12" selected>Fully Successful (III)</option>
-                    </select>
-                    <select id="rating2" class="form-control">
-                        <option value="">No rating</option>
-                        <option value="20">Outstanding (V)</option>
-                        <option value="16">Exceeds (IV)</option>
-                        <option value="12" selected>Fully Successful (III)</option>
-                    </select>
-                    <select id="rating3" class="form-control">
-                        <option value="">No rating</option>
-                        <option value="20">Outstanding (V)</option>
-                        <option value="16">Exceeds (IV)</option>
-                        <option value="12" selected>Fully Successful (III)</option>
+        <h1>Federal Retention Calculator</h1>
+        <div class="calculator-card">
+            <!-- Input Section -->
+            <div class="input-section">
+                <h2>Employee Information</h2>
+                
+                <div class="form-group">
+                    <label for="tenureGroup">Tenure Group:</label>
+                    <select id="tenureGroup" class="form-control">
+                        <option value="I">Group I (Career, Not Probationary)</option>
+                        <option value="II">Group II (Career-Conditional/Probationary)</option>
+                        <option value="III">Group III (Term Appointment)</option>
                     </select>
                 </div>
-                <p class="note">Missing ratings default to Fully Successful</p>
+
+                <div class="form-group">
+                    <label for="veteranStatus">Veteran Preference:</label>
+                    <select id="veteranStatus" class="form-control" onchange="validateMilitary()">
+                        <option value="AD">Subgroup AD (30%+ Disability)</option>
+                        <option value="A">Subgroup A (Other Veterans)</option>
+                        <option value="B">Subgroup B (Non-Veteran)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Service Computation:</label>
+                    <div class="grid-2col">
+                        <input type="number" id="civilianYears" placeholder="Civilian Years" min="0" step="0.1">
+                        <input type="number" id="militaryYears" placeholder="Military Years" min="0" step="0.1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Last 3 Performance Ratings:</label>
+                    <div class="grid-3col">
+                        <select id="rating1" class="form-control">
+                            <option value="20">Outstanding</option>
+                            <option value="16">Exceeds</option>
+                            <option value="12" selected>Fully Successful</option>
+                        </select>
+                        <select id="rating2" class="form-control">
+                            <option value="20">Outstanding</option>
+                            <option value="16">Exceeds</option>
+                            <option value="12" selected>Fully Successful</option>
+                        </select>
+                        <select id="rating3" class="form-control">
+                            <option value="20">Outstanding</option>
+                            <option value="16">Exceeds</option>
+                            <option value="12" selected>Fully Successful</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateRIF()">Calculate Retention</button>
             </div>
 
-            <button onclick="calculateRIF()" class="primary-btn">Generate Unofficial Estimate</button>
-            
-            <div class="note" style="text-align:center; margin-top:1rem;">
-                This estimator cannot account for all retention factors. Always consult 
-                <a href="https://www.opm.gov/policy-data-oversight/workforce-restructuring/reduction-in-force/" target="_blank">
-                    Official OPM Guidance
-                </a>.
+            <!-- Results Section -->
+            <div class="results-section" id="results" style="display: none;">
+                <h2>Retention Standing</h2>
+                <div class="result-item">
+                    <span class="result-label">Tenure Group:</span>
+                    <span id="resultTenure" class="result-value"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Veteran Subgroup:</span>
+                    <span id="resultVeteran" class="result-value"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total SCD:</span>
+                    <span id="resultSCD" class="result-value highlight"></span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Performance Avg:</span>
+                    <span id="resultPerformance" class="result-value"></span>
+                </div>
+                
+                <div class="risk-meter">
+                    <div class="risk-bar" id="riskBar"></div>
+                    <div class="risk-labels">
+                        <span>Low Risk</span>
+                        <span>High Risk</span>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div id="result" class="card result-card" style="display:none;">
-            <div class="warning" style="margin: -1rem 0 1rem;">
-                This estimate does not constitute official standing - Consult your HR specialist
-            </div>
-            <h3>Retention Standing Summary</h3>
-            <!-- Results Display Same as Before -->
-        </div>
-
-        <div class="card reference-table">
-            <h3>Retention Priority Reference Guide</h3>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Levels</th>
-                            <th>Priority Order</th>
-                            <th>Example</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Tenure Group</td>
-                            <td>I, II, III</td>
-                            <td>I (Highest) → III</td>
-                            <td>Career > Term</td>
-                        </tr>
-                        <tr>
-                            <td>Veteran Subgroup</td>
-                            <td>AD, A, B</td>
-                            <td>AD → A → B</td>
-                            <td>30%+ disability first</td>
-                        </tr>
-                        <tr>
-                            <td>Retention Score</td>
-                            <td>1-AD-25.00 format</td>
-                            <td>Lower = Better</td>
-                            <td>1-AD-20 > 1-A-30</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="note" style="margin-top:1rem;">
-                <strong>Key:</strong> Compare left-to-right. Group I beats II regardless of other factors.
-            </div>
+        
+        <div class="disclaimer">
+            <p>This unofficial tool follows OPM's 2025 RIF guidelines. Verify results with your HR specialist.</p>
         </div>
     </div>
-
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-disclaimer">
-                This tool has no government affiliation - Estimates only
-            </div>
-            <div class="footer-links">
-                <a href="#privacy">Privacy</a>
-                <a href="#disclaimer">Disclaimer</a>
-                <a href="#contact">Contact</a>
-            </div>
-        </div>
-    </footer>
 
     <script src="app.js"></script>
 </body>
