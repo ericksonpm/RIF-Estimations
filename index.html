@@ -30,12 +30,13 @@
                         <option value="A">Subgroup A (Other Veterans)</option>
                         <option value="B">Subgroup B (Non-Veteran)</option>
                     </select>
+                    <p id="veteranNote">Note: Veterans with campaign or combat time may be eligible for preference, enhancing RIF retention standing.</p>
                 </div>
 
                 <div class="form-group">
-                    <label for="militaryRetiree">Are you a military retiree with 20+ years of service? If so, check the box.</label>
+                    <label for="militaryRetiree">Are you a military retiree with 20+ years of service?</label>
                     <input type="checkbox" id="militaryRetiree" onclick="updateMilitaryYears()">
-                    <p id="militaryNote" style="display: none;">Note: Military years may not be creditable if receiving military retired pay unless specific conditions apply.</p>
+                    <p id="militaryNote" style="display: none;">Note: Military years may not be creditable unless service was during a war or campaign for which a badge was received.</p>
                 </div>
 
                 <div class="form-group">
@@ -99,4 +100,37 @@
                     <span id="resultYearsToRetirement" class="result-value"></span>
                 </div>
                 <div class="result-item">
-                    <span class="result-label">Severance Pay Estimate
+                    <span class="result-label">Severance Pay Estimate:</span>
+                    <span id="resultSeverance" class="result-value highlight"></span>
+                </div>
+                
+                <div class="risk-meter">
+                    <div class="risk-bar" id="riskBar"></div>
+                    <div class="risk-labels">
+                        <span>Low Risk</span>
+                        <span>High Risk</span>
+                    </div>
+                </div>
+                
+                <button class="export-btn" onclick="exportResults()">Export Results</button>
+            </div>
+        </div>
+
+        <!-- FAQs and Resources -->
+        <div class="faqs-section">
+            <h2>Frequently Asked Questions</h2>
+            <ul>
+                <li><a href="https://www.opm.gov/policy-data-oversight/workforce-restructuring/reductions-in-force/">OPM RIF Guidance</a></li>
+                <li><a href="https://www.fedweek.com/ask/federal-government-policies/reduction-in-force/">RIF Overview</a></li>
+            </ul>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="disclaimer">
+            <p>This unofficial tool follows OPM's 2025 RIF guidelines. Verify results with your HR specialist.</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
