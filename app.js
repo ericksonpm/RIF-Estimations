@@ -1,39 +1,46 @@
+function validateMilitary() {
+    const veteranStatus = document.getElementById('veteranStatus').value;
+    const militaryInput = document.getElementById('militaryYears');
+    
+    if(veteranStatus !== 'AD') {
+        militaryInput.value = '';
+        militaryInput.setAttribute('disabled', 'true');
+    } else {
+        militaryInput.removeAttribute('disabled');
+    }
+}
+
 function calculateRIF() {
-    // Get inputs
-    const tenure = document.getElementById('tenureGroup').value;
+    // Get input values
+    const tenureGroup = document.getElementById('tenureGroup').value;
     const veteranStatus = document.getElementById('veteranStatus').value;
     const civilianYears = parseFloat(document.getElementById('civilianYears').value) || 0;
-    const militaryYears = document.getElementById('militaryRetiree').checked ? 0 : 
-                        parseFloat(document.getElementById('militaryYears').value) || 0;
-
-    // Handle performance ratings
-    const getRatingValue = id => {
-        const val = document.getElementById(id).value;
-        return val ? parseInt(val) : 12; // Default to FS
-    };
+    const militaryYears = parseFloat(document.getElementById('militaryYears').value) || 0;
     
+    // Calculate performance average
     const ratings = [
-        getRatingValue('rating1'),
-        getRatingValue('rating2'),
-        getRatingValue('rating3')
+        parseFloat(document.getElementById('rating1').value),
+        parseFloat(document.getElementById('rating2').value),
+        parseFloat(document.getElementById('rating3').value)
     ];
-    
-    const performanceCredit = ratings.reduce((a,b) => a + b, 0) / 3;
+    const performanceAvg = ratings.reduce((a, b) => a + b, 0) / 3;
 
-    // Calculate SCD
-    const totalService = civilianYears + militaryYears;
-    const adjustedSCD = totalService + performanceCredit;
+    // Calculate total SCD
+    const totalSCD = civilianYears + militaryYears + performanceAvg;
 
-    // Determine retention priority
-    const tenureOrder = {'I': 1, 'II': 2, 'III': 3};
-    const veteranOrder = {'AD': 1, 'A': 2, 'B': 3};
-    const retentionScore = 
-        `${tenureOrder[tenure]}-${veteranOrder[veteranStatus]}-${adjustedSCD.toFixed(2)}`;
+    // Update results display
+    document.getElementById('resultTenure').textContent = `Group ${tenureGroup}`;
+    document.getElementById('resultVeteran').textContent = `Subgroup ${veteranStatus}`;
+    document.getElementById('resultSCD').textContent = `${totalSCD.toFixed(2)} years`;
+    document.getElementById('resultPerformance').textContent = `${performanceAvg.toFixed(1)} average`;
 
-    // Display results
-    document.getElementById('resTenure').textContent = `Group ${tenure}`;
-    document.getElementById('resVeteran').textContent = `Subgroup ${veteranStatus}`;
-    document.getElementById('resSCD').textContent = `${adjustedSCD.toFixed(1)} years`;
-    document.getElementById('resPriority').textContent = retentionScore;
-    document.getElementById('result').style.display = 'block';
+    // Calculate risk level (example calculation)
+    const riskPercentage = Math.min(100, Math.max(0, (totalSCD - 5) * 2));
+    document.getElementById('riskBar').style.width = `${riskPercentage}%`;
+
+    // Show results section
+    document.getElementById('results').style.display = 'block';
 }
+
+// Initial validation
+validateMilitary();
